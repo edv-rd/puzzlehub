@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { GameInfo } from "./GameList";
 import styled, { css } from "styled-components";
 
@@ -7,33 +7,40 @@ interface StyledWrapperProps {
 }
 
 const StyledWrapper = styled.div<StyledWrapperProps>`
-  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 10px 10px #000000;
 
-  border-radius: 15px;
-
-  h1 {
-    font-size: 15px;
+  img {
+    object-fit: contain;
+    height: 60px;
   }
 
   a {
     text-decoration: none;
   }
 
-  img {
-    height: 60px;
-  }
-  ${(props) =>
-    props.finished
-      ? css`
-          border: 1px solid gray;
-        `
-      : css`
-          border: 1px solid red;
-        `}
+  ${(props) => (props.finished ? css`` : css``)}
+`;
+
+const StyledGameInfoSection = styled.div`
+  width: 100%;
+  background-color: #f8f4e3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+`;
+
+const StyledButtonSection = styled.div`
+  width: 100%;
+  min-height: 60px;
+  background-color: #8884ff;
 `;
 
 export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
-  const [isFinished, setIsFinished] = React.useState(checkFinished(gameName));
+  const [isFinished, setIsFinished] = useState(checkFinished(gameName));
 
   const handleGameClick = () => {
     savePlayedDate(gameName);
@@ -42,13 +49,19 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
   };
   return (
     <StyledWrapper finished={isFinished}>
-      <img src={`/${gameImage}`}></img>
-      <h1>
-        <a href={gameUrl}>{gameName}</a>
-        {!isFinished && (
+      <StyledGameInfoSection>
+        <img src={`/${gameImage}`}></img>
+        <h1>
+          <a href={gameUrl}>{gameName}</a>
+        </h1>
+      </StyledGameInfoSection>
+      <StyledButtonSection>
+        {!isFinished ? (
           <button onClick={() => handleGameClick()}>Play!</button>
+        ) : (
+          <h2>"Countdown to new game..."</h2>
         )}
-      </h1>
+      </StyledButtonSection>
     </StyledWrapper>
   );
 };

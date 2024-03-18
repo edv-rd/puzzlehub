@@ -5,7 +5,9 @@ import styled from "styled-components";
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  gap: 20px;
+  padding: 5px;
 `;
 
 export interface GameInfo {
