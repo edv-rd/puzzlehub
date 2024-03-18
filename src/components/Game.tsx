@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameInfo } from "./GameList";
 import styled, { css } from "styled-components";
 
@@ -42,6 +42,16 @@ const StyledButtonSection = styled.div`
 export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
   const [isFinished, setIsFinished] = useState(checkFinished(gameName));
 
+  const [countdown, setCountdown] = useState(calculateCountdown());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCountdown(calculateCountdown());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   const handleGameClick = () => {
     savePlayedDate(gameName);
     setIsFinished(checkFinished(gameName));
@@ -59,7 +69,7 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
         {!isFinished ? (
           <button onClick={() => handleGameClick()}>Play!</button>
         ) : (
-          <h2>"Countdown to new game..."</h2>
+          <h2>New game in {countdown}...</h2>
         )}
       </StyledButtonSection>
     </StyledWrapper>
@@ -78,4 +88,17 @@ function checkFinished(gameName: string): boolean {
 function savePlayedDate(gameName: string) {
   const playedDate = new Date().toLocaleDateString();
   localStorage.setItem(`${gameName}playedDate`, playedDate);
+}
+
+function calculateCountdown(): string {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0);
+  const diff = midnight.getTime() - now.getTime();
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
