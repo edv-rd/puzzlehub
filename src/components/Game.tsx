@@ -60,15 +60,13 @@ const StyledButtonSection = styled.div`
   justify-content: center;
   padding: 5px;
   height: 60px;
+  font-size: 18px;
 
   h2 {
-    font-size: 18px;
-
     color: var(--tertiary-color);
   }
 
   a {
-    font-size: 18px;
     color: var(--tertiary-color);
   }
 
@@ -80,7 +78,6 @@ const StyledButtonSection = styled.div`
 const StyledButton = styled.div`
   padding: 2px;
   margin: 5px;
-  width: 50%;
   background-color: var(--secondary-color);
 
   cursor: pointer;
@@ -114,15 +111,17 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
         <img src={`/${gameImage}`}></img>
       </StyledGameInfoSection>
       <StyledButtonSection>
-        {!isFinished ? (
-          <StyledButton>
-            <a href="/">Play {gameName}!</a>
-          </StyledButton>
-        ) : (
-          <h2>
-            ⏰ New {gameName} in {countdown}...
-          </h2>
-        )}
+        <StyledButton>
+          {!isFinished ? (
+            <a href="/">
+              <h2>Play {gameName}!</h2>
+            </a>
+          ) : (
+            <h2>
+              ⏰ New {gameName} in {countdown}...
+            </h2>
+          )}
+        </StyledButton>
       </StyledButtonSection>
     </StyledWrapper>
   );
