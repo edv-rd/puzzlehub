@@ -3,11 +3,12 @@ import { Game } from "./Game";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px;
-  padding: 5px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 25px;
+  grid-row-gap: 25px;
+  margin-top: 25%;
 `;
 
 export interface GameInfo {

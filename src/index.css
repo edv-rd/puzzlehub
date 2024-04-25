@@ -3,7 +3,12 @@ body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  background-color: #2a2b2a;
+  background-color: #545e75;
+
+  --primary-color: #63adf2;
+  --secondary-color: #a7cced;
+  --tertiary-color: #304d6d;
+  --fourth-color: #82a0bc;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
