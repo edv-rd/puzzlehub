@@ -1,91 +1,11 @@
 import { useEffect, useState } from "react";
 import { GameInfo } from "./GameList";
-import styled, { css } from "styled-components";
-
-interface StyledWrapperProps {
-  finished: boolean;
-}
-
-const StyledWrapper = styled.div<StyledWrapperProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 10px 10px #000;
-  width: 100%;
-
-  img {
-    object-fit: contain;
-    height: 60px;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  ${(props) =>
-    props.finished
-      ? css``
-      : css`
-          &:hover {
-            cursor: pointer;
-
-            transform: translateX(2%) translateY(2%);
-            transition: transform 0.25s ease-out;
-            box-shadow: 10px 10px var(--background-color);
-          }
-        `}
-`;
-
-const StyledGameInfoSection = styled.div`
-  width: 100%;
-  background-color: var(--fourth-color);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  gap: 5px;
-  padding: 5px;
-
-  a {
-    color: var(--tertiary-color);
-  }
-`;
-
-const StyledButtonSection = styled.div`
-  width: 100%;
-  min-height: 60px;
-  background-color: var(--secondary-color);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 5px;
-  height: 60px;
-  font-size: 18px;
-
-  h2 {
-    color: var(--tertiary-color);
-  }
-
-  a {
-    color: var(--tertiary-color);
-  }
-
-  a:visited {
-    color: var(--tertiary-color);
-  }
-`;
-
-const StyledButton = styled.div`
-  padding: 2px;
-  margin: 5px;
-  background-color: var(--secondary-color);
-
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
+import {
+  StyledWrapper,
+  StyledGameInfoSection,
+  StyledButtonSection,
+  StyledButton,
+} from "./styles/Game.styled";
 
 export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
   const [isFinished, setIsFinished] = useState(checkFinished(gameName));
@@ -95,6 +15,7 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCountdown(calculateCountdown());
+      setIsFinished(checkFinished(gameName));
     }, 1000);
 
     return () => clearInterval(intervalId);
