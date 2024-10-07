@@ -1,8 +1,15 @@
 import React from "react";
 import { Game } from "./Game";
+import { DoneForToday } from "./DoneForToday";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledGameGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
@@ -47,14 +54,17 @@ const games: GameInfo[] = [
 export const GameList: React.FC = () => {
   return (
     <StyledWrapper>
-      {games.map((game, index) => (
-        <Game
-          key={index}
-          gameName={game.gameName}
-          gameImage={game.gameImage}
-          gameUrl={game.gameUrl}
-        />
-      ))}
+      <StyledGameGrid>
+        {games.map((game, index) => (
+          <Game
+            key={index}
+            gameName={game.gameName}
+            gameImage={game.gameImage}
+            gameUrl={game.gameUrl}
+          />
+        ))}
+      </StyledGameGrid>
+      <DoneForToday />
     </StyledWrapper>
   );
 };

@@ -25,7 +25,6 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
           filter: brightness(60%);
         `
       : css`
-          box-shadow: 10px 10px #000;
           &:hover {
             cursor: pointer;
             transform: translateX(2%) translateY(2%);
@@ -55,14 +54,16 @@ export const StyledButtonSection = styled.div`
   min-height: 60px;
   background-color: var(--secondary-color);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding: 5px;
-  height: 60px;
   font-size: 18px;
 
   h2 {
     color: var(--tertiary-color);
+    margin: 5px 0;
+    text-align: center;
   }
 
   a {
@@ -76,11 +77,18 @@ export const StyledButtonSection = styled.div`
 
 export const StyledButton = styled.div`
   padding: 2px;
-  margin: 5px;
+  margin: 5px 0;
   background-color: var(--secondary-color);
-
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+`;
+
+export const StyledResultInput = styled.input`
+  width: calc(100% - 10px);
+  padding: 5px;
+  margin: 5px;
+  box-sizing: border-box;
 `;

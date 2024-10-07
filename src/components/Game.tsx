@@ -5,44 +5,79 @@ import {
   StyledGameInfoSection,
   StyledButtonSection,
   StyledButton,
+  StyledResultInput,
 } from "./styles/Game.styled";
 
 export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
   const [isFinished, setIsFinished] = useState(checkFinished(gameName));
-
   const [countdown, setCountdown] = useState(calculateCountdown());
+  const [showResultInput, setShowResultInput] = useState(false);
+  const [result, setResult] = useState("");
+  const [isInputDisabled, setIsInputDisabled] = useState(false);
 
   useEffect(() => {
+    const savedResult = localStorage.getItem(`${gameName}Result`);
+    if (savedResult) {
+      setResult(savedResult);
+      setIsInputDisabled(true);
+    }
+
     const intervalId = setInterval(() => {
       setCountdown(calculateCountdown());
       setIsFinished(checkFinished(gameName));
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [gameName]);
 
   const handleGameClick = () => {
-    savePlayedDate(gameName);
-    setIsFinished(checkFinished(gameName));
-    window.open(gameUrl, "_blank");
+    if (!isFinished) {
+      savePlayedDate(gameName);
+      setIsFinished(checkFinished(gameName));
+      setShowResultInput(true);
+      window.open(gameUrl, "_blank");
+    }
   };
+
+  const handleResultChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newResult = e.target.value;
+    setResult(newResult);
+    if (isValidResult(newResult)) {
+      localStorage.setItem(`${gameName}Result`, newResult);
+      setIsInputDisabled(true);
+    }
+  };
+
+  // Placeholder function for result validation
+  const isValidResult = (input: string): boolean => {
+    // TODO: Implement actual validation logic
+    return true; // For now, assume all inputs are valid
+  };
+
   return (
-    <StyledWrapper finished={isFinished} onClick={() => handleGameClick()}>
+    <StyledWrapper finished={isFinished} onClick={handleGameClick}>
       <StyledGameInfoSection>
-        <img src={`/${gameImage}`}></img>
+        <img src={`/${gameImage}`} alt={gameName} />
       </StyledGameInfoSection>
       <StyledButtonSection>
         <StyledButton>
           {!isFinished ? (
-            <a href="/">
-              <h2>Play {gameName}!</h2>
-            </a>
+            <h2>Play {gameName}!</h2>
           ) : (
             <h2>
               ⏰ New {gameName} in {countdown}...
             </h2>
           )}
         </StyledButton>
+        {isFinished && (
+          <StyledResultInput
+            type="text"
+            placeholder="Paste your result here"
+            value={!isInputDisabled ? result : "Result saved!"}
+            onChange={handleResultChange}
+            disabled={isInputDisabled}
+          />
+        )}
       </StyledButtonSection>
     </StyledWrapper>
   );
