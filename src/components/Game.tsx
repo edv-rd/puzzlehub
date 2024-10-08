@@ -16,7 +16,6 @@ interface GameResult {
 export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
   const [isFinished, setIsFinished] = useState(false);
   const [countdown, setCountdown] = useState(calculateCountdown());
-  const [result, setResult] = useState<GameResult | null>(null);
 
   useEffect(() => {
     const savedResults = JSON.parse(
@@ -26,7 +25,6 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
       (r: GameResult) => r.playedDate === getTodayDate()
     );
     if (todayResult) {
-      setResult(todayResult);
       setIsFinished(true);
     }
 
@@ -56,7 +54,7 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
           result: text,
           playedDate: getTodayDate(),
         };
-        setResult(newResult);
+
         saveResult(gameName, newResult);
         setIsFinished(true);
       }
