@@ -85,10 +85,3 @@ export const StyledButton = styled.div`
   justify-content: center;
   width: 100%;
 `;
-
-export const StyledResultInput = styled.input`
-  width: calc(100% - 10px);
-  padding: 5px;
-  margin: 5px;
-  box-sizing: border-box;
-`;

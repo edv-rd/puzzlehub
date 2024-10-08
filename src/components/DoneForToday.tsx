@@ -11,15 +11,25 @@ const StyledButton = styled.button`
   margin-top: 20px;
 `;
 
+interface GameResult {
+  gameName: string;
+  result: string;
+  playedDate: string;
+}
+
 export const DoneForToday: React.FC = () => {
   const handleDoneClick = () => {
     const games = ["Wordle", "Connections", "GuessThe.Game", "Framed"];
+    const todayDate = new Date().toISOString().split("T")[0];
     let combinedResult = "";
 
     games.forEach((game) => {
-      const result = localStorage.getItem(`${game}Result`);
-      if (result) {
-        combinedResult += `${game}:\n${result}\n\n`;
+      const results: GameResult[] = JSON.parse(
+        localStorage.getItem(`${game}Results`) || "[]"
+      );
+      const todayResult = results.find((r) => r.playedDate === todayDate);
+      if (todayResult) {
+        combinedResult += `${game}:\n${todayResult.result}\n\n`;
       }
     });
 

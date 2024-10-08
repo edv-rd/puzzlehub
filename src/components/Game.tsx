@@ -5,26 +5,34 @@ import {
   StyledGameInfoSection,
   StyledButtonSection,
   StyledButton,
-  StyledResultInput,
 } from "./styles/Game.styled";
 
+interface GameResult {
+  gameName: string;
+  result: string;
+  playedDate: string;
+}
+
 export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
-  const [isFinished, setIsFinished] = useState(checkFinished(gameName));
+  const [isFinished, setIsFinished] = useState(false);
   const [countdown, setCountdown] = useState(calculateCountdown());
-  const [showResultInput, setShowResultInput] = useState(false);
-  const [result, setResult] = useState("");
-  const [isInputDisabled, setIsInputDisabled] = useState(false);
+  const [result, setResult] = useState<GameResult | null>(null);
 
   useEffect(() => {
-    const savedResult = localStorage.getItem(`${gameName}Result`);
-    if (savedResult) {
-      setResult(savedResult);
-      setIsInputDisabled(true);
+    const savedResults = JSON.parse(
+      localStorage.getItem(`${gameName}Results`) || "[]"
+    );
+    const todayResult = savedResults.find(
+      (r: GameResult) => r.playedDate === getTodayDate()
+    );
+    if (todayResult) {
+      setResult(todayResult);
+      setIsFinished(true);
     }
 
     const intervalId = setInterval(() => {
       setCountdown(calculateCountdown());
-      setIsFinished(checkFinished(gameName));
+      checkClipboard();
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -32,26 +40,88 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
 
   const handleGameClick = () => {
     if (!isFinished) {
-      savePlayedDate(gameName);
-      setIsFinished(checkFinished(gameName));
-      setShowResultInput(true);
       window.open(gameUrl, "_blank");
     }
   };
 
-  const handleResultChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newResult = e.target.value;
-    setResult(newResult);
-    if (isValidResult(newResult)) {
-      localStorage.setItem(`${gameName}Result`, newResult);
-      setIsInputDisabled(true);
+  const checkClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+
+      // Compare strings character by character
+
+      if (isValidResult(text, gameName) && !isFinished) {
+        const newResult: GameResult = {
+          gameName: gameName,
+          result: text,
+          playedDate: getTodayDate(),
+        };
+        setResult(newResult);
+        saveResult(gameName, newResult);
+        setIsFinished(true);
+      }
+    } catch (err) {
+      console.error("Failed to read clipboard contents: ", err);
     }
   };
 
   // Placeholder function for result validation
-  const isValidResult = (input: string): boolean => {
-    // TODO: Implement actual validation logic
-    return true; // For now, assume all inputs are valid
+  const isValidResult = (input: string, game: string): boolean => {
+    switch (game) {
+      case "Wordle": {
+        const normalizedInput = input
+          .replace(/\u00A0/g, " ")
+          .replace(/\r\n/g, "\n")
+          .replace(/\s+/g, " ")
+          .trim();
+        console.log("Normalized Input:", normalizedInput);
+        const regex = /^Wordle\s\d{1,4}\s\d{1,3}\s\d{1}\/6/m;
+        console.log("Match Result:", regex.test(normalizedInput));
+
+        return regex.test(normalizedInput);
+      }
+      case "Connections": {
+        const normalizedInput = input
+          .replace(/\u00A0/g, " ")
+          .replace(/\r\n/g, "\n")
+          .trim();
+        console.log("Normalized Input:", normalizedInput);
+        const regex = /^Connections\s*\nPuzzle\s+#\d+/m;
+        console.log("Match Result:", regex.test(normalizedInput));
+
+        return regex.test(normalizedInput);
+      }
+
+      case "GuessThe.Game": {
+        const normalizedInput = input
+          .replace(/\u00A0/g, " ")
+          .replace(/\r\n/g, "\n")
+          .replace(/\s+/g, " ") // Normalize to a single space
+          .trim();
+
+        console.log("Normalized Input:", normalizedInput);
+        const regex = /^#GuessTheGame\s+#\d+/m;
+        console.log("Match Result:", regex.test(normalizedInput));
+
+        return regex.test(normalizedInput);
+      }
+      case "Framed": {
+        const normalizedInput = input
+          .replace(/\u00A0/g, " ")
+          .replace(/\r\n/g, "\n")
+          .replace(/\s+/g, " ") // Normalize to a single space
+          .trim();
+
+        console.log("Normalized Input:", normalizedInput);
+        const regex = /^Framed\s+#\d+/m;
+        console.log("Match Result:", regex.test(normalizedInput));
+
+        return regex.test(normalizedInput);
+      }
+
+      default:
+        return false;
+    }
   };
 
   return (
@@ -69,29 +139,22 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
             </h2>
           )}
         </StyledButton>
-        {isFinished && (
-          <StyledResultInput
-            type="text"
-            placeholder="Paste your result here"
-            value={!isInputDisabled ? result : "Result saved!"}
-            onChange={handleResultChange}
-            disabled={isInputDisabled}
-          />
-        )}
+        {isFinished && <p>Result saved!</p>}
       </StyledButtonSection>
     </StyledWrapper>
   );
 };
 
-function checkFinished(gameName: string): boolean {
-  const todaysDate = new Date().toLocaleDateString();
-  const playedDate = localStorage.getItem(`${gameName}playedDate`);
-  return todaysDate == playedDate;
+function getTodayDate(): string {
+  return new Date().toISOString().split("T")[0];
 }
 
-function savePlayedDate(gameName: string) {
-  const playedDate = new Date().toLocaleDateString();
-  localStorage.setItem(`${gameName}playedDate`, playedDate);
+function saveResult(gameName: string, newResult: GameResult) {
+  const savedResults = JSON.parse(
+    localStorage.getItem(`${gameName}Results`) || "[]"
+  );
+  savedResults.push(newResult);
+  localStorage.setItem(`${gameName}Results`, JSON.stringify(savedResults));
 }
 
 function calculateCountdown(): string {
