@@ -1,19 +1,31 @@
 import { useEffect, useState } from "react";
-import { GameInfo } from "./GameList";
 import {
   StyledWrapper,
   StyledGameInfoSection,
   StyledButtonSection,
   StyledButton,
+  StyledCheckmark,
 } from "./styles/Game.styled";
 
-interface GameResult {
+interface GameProps {
   gameName: string;
-  result: string;
-  playedDate: string;
+  gameImage: string;
+  gameUrl: string;
+  regex: string;
+  visible: boolean;
+  editMode: boolean;
+  onToggleVisibility: () => void;
 }
 
-export const Game = ({ gameName, gameImage, gameUrl, regex }: GameInfo) => {
+export const Game: React.FC<GameProps> = ({
+  gameName,
+  gameImage,
+  gameUrl,
+  regex,
+  visible,
+  editMode,
+  onToggleVisibility,
+}) => {
   const [isFinished, setIsFinished] = useState(false);
   const [countdown, setCountdown] = useState(calculateCountdown());
 
@@ -22,7 +34,7 @@ export const Game = ({ gameName, gameImage, gameUrl, regex }: GameInfo) => {
       localStorage.getItem(`${gameName}Results`) || "[]"
     );
     const todayResult = savedResults.find(
-      (r: GameResult) => r.playedDate === getTodayDate()
+      (r) => r.playedDate === getTodayDate()
     );
     if (todayResult) {
       setIsFinished(true);
@@ -30,53 +42,24 @@ export const Game = ({ gameName, gameImage, gameUrl, regex }: GameInfo) => {
 
     const intervalId = setInterval(() => {
       setCountdown(calculateCountdown());
-      checkClipboard();
     }, 1000);
 
     return () => clearInterval(intervalId);
   }, [gameName]);
 
   const handleGameClick = () => {
-    if (!isFinished) {
+    if (!isFinished && !editMode) {
       window.open(gameUrl, "_blank");
     }
   };
 
-  const checkClipboard = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-
-      if (isValidResult(text) && !isFinished) {
-        const newResult: GameResult = {
-          gameName: gameName,
-          result: text,
-          playedDate: getTodayDate(),
-        };
-
-        saveResult(gameName, newResult);
-        setIsFinished(true);
-      }
-    } catch (err) {
-      console.error("Failed to read clipboard contents: ", err);
-    }
-  };
-
-  const isValidResult = (input: string): boolean => {
-    const normalizedInput = input
-      .replace(/\u00A0/g, " ")
-      .replace(/\r\n/g, "\n")
-      .trim();
-
-    console.log("Normalized Input:", normalizedInput);
-    const regexPattern = new RegExp(regex, "m");
-    console.log(regexPattern);
-    console.log("Match Result:", regexPattern.test(normalizedInput));
-
-    return regexPattern.test(normalizedInput);
-  };
-
   return (
-    <StyledWrapper finished={isFinished} onClick={handleGameClick}>
+    <StyledWrapper
+      editMode={editMode}
+      finished={isFinished}
+      visible={visible}
+      onClick={handleGameClick}
+    >
       <StyledGameInfoSection>
         <img src={`/${gameImage}`} alt={gameName} />
       </StyledGameInfoSection>
@@ -92,20 +75,17 @@ export const Game = ({ gameName, gameImage, gameUrl, regex }: GameInfo) => {
         </StyledButton>
         {isFinished && <p>Result saved!</p>}
       </StyledButtonSection>
+      {editMode && (
+        <StyledCheckmark onClick={onToggleVisibility}>
+          {visible ? "✅" : "❌"}
+        </StyledCheckmark>
+      )}
     </StyledWrapper>
   );
 };
 
 function getTodayDate(): string {
   return new Date().toISOString().split("T")[0];
-}
-
-function saveResult(gameName: string, newResult: GameResult) {
-  const savedResults = JSON.parse(
-    localStorage.getItem(`${gameName}Results`) || "[]"
-  );
-  savedResults.push(newResult);
-  localStorage.setItem(`${gameName}Results`, JSON.stringify(savedResults));
 }
 
 function calculateCountdown(): string {

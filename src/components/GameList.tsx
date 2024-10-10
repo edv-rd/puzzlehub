@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Game } from "./Game";
 import { DoneForToday } from "./DoneForToday";
 import styled from "styled-components";
@@ -29,22 +29,49 @@ export interface GameInfo {
   gameImage: string;
   gameUrl: string;
   regex: string;
+  visible: boolean;
 }
 
 export const GameList: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
+
+  const [games, setGames] = useState<GameInfo[]>([]);
+
+  useEffect(() => {
+    const storedGames = localStorage.getItem("gameVisibility");
+    if (storedGames) {
+      setGames(JSON.parse(storedGames));
+    } else {
+      const initialGames = gameData.map((game) => ({ ...game, visible: true }));
+      setGames(initialGames);
+    }
+  }, []);
+
+  const saveToLocalStorage = (updatedGames: GameInfo[]) => {
+    localStorage.setItem("gameVisibility", JSON.stringify(updatedGames));
+  };
+
+  const toggleVisibility = (index: number) => {
+    const updatedGames = [...games];
+    updatedGames[index].visible = !updatedGames[index].visible;
+    setGames(updatedGames);
+    saveToLocalStorage(updatedGames);
+  };
   return (
     <>
       <TopBar editMode={editMode} setEditMode={setEditMode} />
       <StyledWrapper>
         <StyledGameGrid>
-          {gameData.map((game: GameInfo, index: number) => (
+          {games.map((game: GameInfo, index: number) => (
             <Game
               key={index}
               gameName={game.gameName}
               gameImage={game.gameImage}
               gameUrl={game.gameUrl}
               regex={game.regex}
+              visible={game.visible}
+              editMode={editMode}
+              onToggleVisibility={() => toggleVisibility(index)}
             />
           ))}
         </StyledGameGrid>

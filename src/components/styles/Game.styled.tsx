@@ -1,11 +1,16 @@
 import styled, { css } from "styled-components";
 
 interface StyledWrapperProps {
+  visible: boolean;
   finished: boolean;
+  editMode: boolean;
 }
 
 export const StyledWrapper = styled.div<StyledWrapperProps>`
-  display: flex;
+  display: ${(props) =>
+    props.editMode || props.visible
+      ? "flex"
+      : "none"}; // Show if editMode is true or visible is true
   flex-direction: column;
   align-items: center;
   width: 30em;
@@ -19,10 +24,17 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
     text-decoration: none;
   }
 
+  // Apply styles based on editMode and visible props
   ${(props) =>
-    props.finished
+    props.editMode && !props.visible
       ? css`
-          filter: brightness(60%);
+          filter: brightness(
+            60%
+          ); // Apply brightness filter if not visible in edit mode
+        `
+      : props.finished
+      ? css`
+          filter: brightness(60%); // Apply brightness filter if finished
         `
       : css`
           &:hover {
@@ -83,4 +95,13 @@ export const StyledButton = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+`;
+
+export const StyledCheckmark = styled.div`
+  cursor: pointer;
+  font-size: 24px;
+  margin-top: 10px;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
