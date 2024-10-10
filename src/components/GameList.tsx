@@ -2,6 +2,7 @@ import React from "react";
 import { Game } from "./Game";
 import { DoneForToday } from "./DoneForToday";
 import styled from "styled-components";
+import gameData from "../games.json";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -26,43 +27,26 @@ export interface GameInfo {
   gameName: string;
   gameImage: string;
   gameUrl: string;
+  visible: boolean;
+  regex: string;
 }
-
-const games: GameInfo[] = [
-  {
-    gameName: "Wordle",
-    gameImage: "wordle.png",
-    gameUrl: "https://www.nytimes.com/games/wordle",
-  },
-  {
-    gameName: "Connections",
-    gameImage: "connections.png",
-    gameUrl: "https://www.nytimes.com/games/connections",
-  },
-  {
-    gameName: "GuessThe.Game",
-    gameImage: "gtg.webp",
-    gameUrl: "https://guessthe.game",
-  },
-  {
-    gameName: "Framed",
-    gameImage: "framed.png",
-    gameUrl: "https://framed.wtf",
-  },
-];
 
 export const GameList: React.FC = () => {
   return (
     <StyledWrapper>
       <StyledGameGrid>
-        {games.map((game, index) => (
-          <Game
-            key={index}
-            gameName={game.gameName}
-            gameImage={game.gameImage}
-            gameUrl={game.gameUrl}
-          />
-        ))}
+        {gameData
+          .filter((game: GameInfo) => game.visible)
+          .map((game: GameInfo, index: number) => (
+            <Game
+              key={index}
+              gameName={game.gameName}
+              gameImage={game.gameImage}
+              gameUrl={game.gameUrl}
+              visible={game.visible}
+              regex={game.regex}
+            />
+          ))}
       </StyledGameGrid>
       <DoneForToday />
     </StyledWrapper>

@@ -27,9 +27,8 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
       : css`
           &:hover {
             cursor: pointer;
-            transform: translateX(2%) translateY(2%);
-            transition: transform 0.25s ease-out;
-            box-shadow: 10px 10px var(--background-color);
+            transform: translateX(1%) translateY(1%);
+            transition: transform 0.2s ease-out;
           }
         `}
 `;

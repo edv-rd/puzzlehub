@@ -13,7 +13,7 @@ interface GameResult {
   playedDate: string;
 }
 
-export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
+export const Game = ({ gameName, gameImage, gameUrl, regex }: GameInfo) => {
   const [isFinished, setIsFinished] = useState(false);
   const [countdown, setCountdown] = useState(calculateCountdown());
 
@@ -46,9 +46,7 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
     try {
       const text = await navigator.clipboard.readText();
 
-      // Compare strings character by character
-
-      if (isValidResult(text, gameName) && !isFinished) {
+      if (isValidResult(text) && !isFinished) {
         const newResult: GameResult = {
           gameName: gameName,
           result: text,
@@ -63,63 +61,18 @@ export const Game = ({ gameName, gameImage, gameUrl }: GameInfo) => {
     }
   };
 
-  // Placeholder function for result validation
-  const isValidResult = (input: string, game: string): boolean => {
-    switch (game) {
-      case "Wordle": {
-        const normalizedInput = input
-          .replace(/\u00A0/g, " ")
-          .replace(/\r\n/g, "\n")
-          .replace(/\s+/g, " ")
-          .trim();
-        console.log("Normalized Input:", normalizedInput);
-        const regex = /^Wordle\s\d{1,4}\s\d{1,3}\s\d{1}\/6/m;
-        console.log("Match Result:", regex.test(normalizedInput));
+  const isValidResult = (input: string): boolean => {
+    const normalizedInput = input
+      .replace(/\u00A0/g, " ")
+      .replace(/\r\n/g, "\n")
+      .trim();
 
-        return regex.test(normalizedInput);
-      }
-      case "Connections": {
-        const normalizedInput = input
-          .replace(/\u00A0/g, " ")
-          .replace(/\r\n/g, "\n")
-          .trim();
-        console.log("Normalized Input:", normalizedInput);
-        const regex = /^Connections\s*\nPuzzle\s+#\d+/m;
-        console.log("Match Result:", regex.test(normalizedInput));
+    console.log("Normalized Input:", normalizedInput);
+    const regexPattern = new RegExp(regex, "m");
+    console.log(regexPattern);
+    console.log("Match Result:", regexPattern.test(normalizedInput));
 
-        return regex.test(normalizedInput);
-      }
-
-      case "GuessThe.Game": {
-        const normalizedInput = input
-          .replace(/\u00A0/g, " ")
-          .replace(/\r\n/g, "\n")
-          .replace(/\s+/g, " ") // Normalize to a single space
-          .trim();
-
-        console.log("Normalized Input:", normalizedInput);
-        const regex = /^#GuessTheGame\s+#\d+/m;
-        console.log("Match Result:", regex.test(normalizedInput));
-
-        return regex.test(normalizedInput);
-      }
-      case "Framed": {
-        const normalizedInput = input
-          .replace(/\u00A0/g, " ")
-          .replace(/\r\n/g, "\n")
-          .replace(/\s+/g, " ") // Normalize to a single space
-          .trim();
-
-        console.log("Normalized Input:", normalizedInput);
-        const regex = /^Framed\s+#\d+/m;
-        console.log("Match Result:", regex.test(normalizedInput));
-
-        return regex.test(normalizedInput);
-      }
-
-      default:
-        return false;
-    }
+    return regexPattern.test(normalizedInput);
   };
 
   return (

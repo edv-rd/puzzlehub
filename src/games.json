@@ -1,0 +1,30 @@
+[
+  {
+    "gameName": "Wordle",
+    "gameImage": "wordle.png",
+    "gameUrl": "https://www.nytimes.com/games/wordle",
+    "visible": true,
+    "regex": "^Wordle\\s\\d{1,4}\\s\\d{1,3}\\s\\d{1}/6"
+  },
+  {
+    "gameName": "Connections",
+    "gameImage": "connections.png",
+    "gameUrl": "https://www.nytimes.com/games/connections",
+    "visible": true,
+    "regex": "^Connections\\s*\\nPuzzle\\s+#\\d+"
+  },
+  {
+    "gameName": "GuessThe.Game",
+    "gameImage": "gtg.webp",
+    "gameUrl": "https://guessthe.game",
+    "visible": true,
+    "regex": "^#GuessTheGame\\s+#\\d+"
+  },
+  {
+    "gameName": "Framed",
+    "gameImage": "framed.png",
+    "gameUrl": "https://framed.wtf",
+    "visible": true,
+    "regex": "^Framed\\s+#\\d+"
+  }
+]
