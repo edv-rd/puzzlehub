@@ -12,7 +12,7 @@ const StyledButton = styled.button`
   margin-top: 20px;
 `;
 
-interface GameResult {
+export interface GameResult {
   gameName: string;
   result: string;
   playedDate: string;

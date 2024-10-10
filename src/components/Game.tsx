@@ -6,6 +6,7 @@ import {
   StyledButton,
   StyledCheckmark,
 } from "./styles/Game.styled";
+import { GameResult } from "./DoneForToday";
 
 interface GameProps {
   gameName: string;
@@ -21,7 +22,6 @@ export const Game: React.FC<GameProps> = ({
   gameName,
   gameImage,
   gameUrl,
-  regex,
   visible,
   editMode,
   onToggleVisibility,
@@ -34,7 +34,7 @@ export const Game: React.FC<GameProps> = ({
       localStorage.getItem(`${gameName}Results`) || "[]"
     );
     const todayResult = savedResults.find(
-      (r) => r.playedDate === getTodayDate()
+      (r: GameResult) => r.playedDate === getTodayDate()
     );
     if (todayResult) {
       setIsFinished(true);
