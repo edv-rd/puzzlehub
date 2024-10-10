@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Game } from "./Game";
 import { DoneForToday } from "./DoneForToday";
 import styled from "styled-components";
 import gameData from "../games.json";
+import TopBar from "./TopBar";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -27,28 +28,28 @@ export interface GameInfo {
   gameName: string;
   gameImage: string;
   gameUrl: string;
-  visible: boolean;
   regex: string;
 }
 
 export const GameList: React.FC = () => {
+  const [editMode, setEditMode] = useState(false);
   return (
-    <StyledWrapper>
-      <StyledGameGrid>
-        {gameData
-          .filter((game: GameInfo) => game.visible)
-          .map((game: GameInfo, index: number) => (
+    <>
+      <TopBar editMode={editMode} setEditMode={setEditMode} />
+      <StyledWrapper>
+        <StyledGameGrid>
+          {gameData.map((game: GameInfo, index: number) => (
             <Game
               key={index}
               gameName={game.gameName}
               gameImage={game.gameImage}
               gameUrl={game.gameUrl}
-              visible={game.visible}
               regex={game.regex}
             />
           ))}
-      </StyledGameGrid>
-      <DoneForToday />
-    </StyledWrapper>
+        </StyledGameGrid>
+        <DoneForToday />
+      </StyledWrapper>
+    </>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import gameData from "../games.json";
 
 const StyledButton = styled.button`
   padding: 10px 20px;
@@ -19,17 +20,16 @@ interface GameResult {
 
 export const DoneForToday: React.FC = () => {
   const handleDoneClick = () => {
-    const games = ["Wordle", "Connections", "GuessThe.Game", "Framed"];
     const todayDate = new Date().toISOString().split("T")[0];
-    let combinedResult = "";
+    let combinedResult = `PuzzleHub for ${todayDate}\n\n---\n\n`;
 
-    games.forEach((game) => {
+    gameData.forEach((game) => {
       const results: GameResult[] = JSON.parse(
-        localStorage.getItem(`${game}Results`) || "[]"
+        localStorage.getItem(`${game.gameName}Results`) || "[]"
       );
       const todayResult = results.find((r) => r.playedDate === todayDate);
       if (todayResult) {
-        combinedResult += `${game}:\n${todayResult.result}\n\n`;
+        combinedResult += `${todayResult.result}\n\n---\n\n`;
       }
     });
 
