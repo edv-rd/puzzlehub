@@ -24,6 +24,7 @@ export const Game: React.FC<GameProps> = ({
   gameUrl,
   visible,
   editMode,
+  regex,
   onToggleVisibility,
 }) => {
   const [isFinished, setIsFinished] = useState(false);
@@ -42,7 +43,36 @@ export const Game: React.FC<GameProps> = ({
 
     const intervalId = setInterval(() => {
       setCountdown(calculateCountdown());
+      checkClipboard();
     }, 1000);
+
+    const checkClipboard = async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (isValidResult(text) && !isFinished) {
+          const newResult: GameResult = {
+            gameName: gameName,
+            result: text,
+            playedDate: getTodayDate(),
+          };
+          saveResult(gameName, newResult);
+          setIsFinished(true);
+        }
+      } catch (err) {
+        console.error("Failed to read clipboard contents: ", err);
+      }
+    };
+    const isValidResult = (input: string): boolean => {
+      const normalizedInput = input
+        .replace(/\u00A0/g, " ")
+        .replace(/\r\n/g, "\n")
+        .trim();
+      console.log("Normalized Input:", normalizedInput);
+      const regexPattern = new RegExp(regex, "m");
+      console.log(regexPattern);
+      console.log("Match Result:", regexPattern.test(normalizedInput));
+      return regexPattern.test(normalizedInput);
+    };
 
     return () => clearInterval(intervalId);
   }, [gameName]);
@@ -86,6 +116,14 @@ export const Game: React.FC<GameProps> = ({
 
 function getTodayDate(): string {
   return new Date().toISOString().split("T")[0];
+}
+
+function saveResult(gameName: string, newResult: GameResult) {
+  const savedResults = JSON.parse(
+    localStorage.getItem(`${gameName}Results`) || "[]"
+  );
+  savedResults.push(newResult);
+  localStorage.setItem(`${gameName}Results`, JSON.stringify(savedResults));
 }
 
 function calculateCountdown(): string {
