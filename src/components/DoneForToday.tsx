@@ -34,6 +34,7 @@ export const DoneForToday: React.FC = () => {
     });
 
     if (combinedResult) {
+      combinedResult = combinedResult + "http://puzzlehub.edvardshemsida.se 👍";
       navigator.clipboard.writeText(combinedResult.trim());
       alert("Combined results copied to clipboard!");
     } else {
