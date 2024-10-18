@@ -19,7 +19,7 @@ const StyledGameGrid = styled.div`
   grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 25px;
   grid-row-gap: 25px;
-  margin-top: 25%;
+  margin-top: 5%;
   @media (max-width: 991px) {
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(1, 1fr);

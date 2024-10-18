@@ -104,12 +104,12 @@ export const Game: React.FC<GameProps> = ({
           )}
         </StyledButton>
         {isFinished && <p>Result saved!</p>}
+        {editMode && (
+          <StyledCheckmark onClick={onToggleVisibility}>
+            {visible ? "✅" : "❌"}
+          </StyledCheckmark>
+        )}
       </StyledButtonSection>
-      {editMode && (
-        <StyledCheckmark onClick={onToggleVisibility}>
-          {visible ? "✅" : "❌"}
-        </StyledCheckmark>
-      )}
     </StyledWrapper>
   );
 };

@@ -3,11 +3,15 @@ import styled from "styled-components";
 
 const StyledTopBar = styled.div`
   height: 30px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--fourth-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 10px;
+
+  a {
+    color: var(--second-color);
+  }
 `;
 
 const StyledEditModeSwitch = styled.div`
@@ -23,10 +27,12 @@ const TopBar: React.FC<TopBarProps> = ({ editMode, setEditMode }) => {
   return (
     <StyledTopBar>
       <StyledEditModeSwitch onClick={() => setEditMode(!editMode)}>
-        Edit mode {editMode ? "on" : "off"}
+        edit mode <b>{editMode ? "on" : "off"}</b>
       </StyledEditModeSwitch>
       <div>
-        <a href="http://edvardshemsida.se">edvards hemsida</a>
+        <a href="http://edvardshemsida.se" target="_blank">
+          edvards hemsida
+        </a>
       </div>
     </StyledTopBar>
   );
