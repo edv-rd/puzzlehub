@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import gameData from "../games.json";
+import { toast } from "react-toastify";
 
 const StyledButton = styled.button`
   padding: 10px 20px;
@@ -36,9 +37,18 @@ export const DoneForToday: React.FC = () => {
     if (combinedResult) {
       combinedResult = combinedResult + "http://puzzlehub.edvardshemsida.se 👍";
       navigator.clipboard.writeText(combinedResult.trim());
-      alert("Combined results copied to clipboard!");
+      toast.success("Combined results copied to clipboard!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } else {
-      alert("No results found for today's games.");
+      toast.error("No results found for today's games.");
     }
   };
 

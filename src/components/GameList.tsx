@@ -4,6 +4,7 @@ import { DoneForToday } from "./DoneForToday";
 import styled from "styled-components";
 import gameData from "../games.json";
 import TopBar from "./TopBar";
+import { ToastContainer } from "react-toastify";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -59,6 +60,19 @@ export const GameList: React.FC = () => {
   };
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+
       <TopBar editMode={editMode} setEditMode={setEditMode} />
       <StyledWrapper>
         <StyledGameGrid>

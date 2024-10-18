@@ -3,7 +3,7 @@
     "gameName": "Wordle",
     "gameImage": "wordle.png",
     "gameUrl": "https://www.nytimes.com/games/wordle",
-    "regex": "^Wordle\\s\\d{1,4}\\s\\d{1,3}\\s\\d{1}/6"
+    "regex": "^Wordle\\s\\d{1,4}\\s\\d{1,3}\\s"
   },
   {
     "gameName": "Connections",
