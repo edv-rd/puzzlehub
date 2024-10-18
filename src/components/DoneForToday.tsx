@@ -48,7 +48,16 @@ export const DoneForToday: React.FC = () => {
         theme: "colored",
       });
     } else {
-      toast.success("no results found");
+      toast.error("Results updated!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
