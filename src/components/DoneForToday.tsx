@@ -30,14 +30,14 @@ export const DoneForToday: React.FC = () => {
       );
       const todayResult = results.find((r) => r.playedDate === todayDate);
       if (todayResult) {
-        combinedResult += `${todayResult.result}\n\n---\n\n`;
+        combinedResult += `${todayResult.result}`;
       }
     });
 
     if (combinedResult) {
       combinedResult = combinedResult + "http://puzzlehub.edvardshemsida.se 👍";
       navigator.clipboard.writeText(combinedResult.trim());
-      toast.success("Combined results copied to clipboard!", {
+      toast.success("Results updated!", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: true,
@@ -48,7 +48,7 @@ export const DoneForToday: React.FC = () => {
         theme: "colored",
       });
     } else {
-      toast.error("No results found for today's games.");
+      toast.success("no results found");
     }
   };
 
