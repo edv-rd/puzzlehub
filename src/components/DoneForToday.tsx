@@ -30,7 +30,7 @@ export const DoneForToday: React.FC = () => {
       );
       const todayResult = results.find((r) => r.playedDate === todayDate);
       if (todayResult) {
-        combinedResult += `${todayResult.result}`;
+        combinedResult += `${todayResult.result}\n\n`;
       }
     });
 
@@ -48,7 +48,7 @@ export const DoneForToday: React.FC = () => {
         theme: "colored",
       });
     } else {
-      toast.error("Results updated!", {
+      toast.error("No results found!", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: true,
