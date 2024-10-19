@@ -27,19 +27,19 @@
     "gameName": "Chronophoto",
     "gameImage": "Chronophoto.svg",
     "gameUrl": "https://chronophoto.app",
-    "regex": "I got a score of (\\d+) on today's Chronophoto"
+    "regex": "^I got a score of (\\d+) on today's Chronophoto"
   },
   {
     "gameName": "TimeGuessr",
     "gameImage": "timeguessr.svg",
     "gameUrl": "https://timeguessr.com/",
-    "regex": "TimeGuessr #(\\d+)"
+    "regex": "^TimeGuessr #(\\d+)"
   },
   {
     "gameName": "Strands",
     "gameImage": "strands.svg",
     "gameUrl": "https://www.nytimes.com/games/strands",
-    "regex": "Strands #\\d+"
+    "regex": "^Strands #\\d+"
   },
   {
     "gameName": "The Mini Crossword",

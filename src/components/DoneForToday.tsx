@@ -41,7 +41,7 @@ export const DoneForToday: React.FC = () => {
 
       combinedResult =
         combinedResult +
-        `---\n\nhttp://puzzlehub.edvardshemsida.se - Made by Ed ${randomEmoji}`;
+        `http://puzzlehub.edvardshemsida.se - Made by Ed ${randomEmoji}`;
       navigator.clipboard.writeText(combinedResult.trim());
       toast.success("Results updated!", {
         position: "top-center",

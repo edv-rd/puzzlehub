@@ -90,7 +90,7 @@ export const Game: React.FC<GameProps> = ({
         .replace(/\r\n/g, "\n")
         .trim();
       // console.log("Normalized Input:", normalizedInput);
-      const regexPattern = new RegExp(regex, "m");
+      const regexPattern = new RegExp(regex);
       // console.log(regexPattern);
       // console.log("Match Result:", regexPattern.test(normalizedInput));
       return regexPattern.test(normalizedInput);
