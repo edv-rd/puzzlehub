@@ -8,6 +8,8 @@ import {
 } from "./styles/Game.styled";
 import { GameResult } from "./DoneForToday";
 import resultTrimmer from "../utils/resultTrimmer";
+import { toast } from "react-toastify";
+import React from "react";
 
 interface GameProps {
   gameName: string;
@@ -63,6 +65,7 @@ export const Game: React.FC<GameProps> = ({
 
             saveResult(gameName, newResult);
             setIsFinished(true);
+            navigator.clipboard.writeText("");
           }
         } else if (isValidResult(text) && !isFinished) {
           const trimmedResult = resultTrimmer({ gameName, text });
@@ -75,6 +78,7 @@ export const Game: React.FC<GameProps> = ({
 
           saveResult(gameName, newResult);
           setIsFinished(true);
+          navigator.clipboard.writeText("");
         }
       } catch (err) {
         console.error("Failed to read clipboard contents: ", err);
@@ -121,7 +125,6 @@ export const Game: React.FC<GameProps> = ({
             </h2>
           )}
         </StyledButton>
-        {isFinished && <p>Result saved!</p>}
         {editMode && (
           <StyledCheckmark onClick={onToggleVisibility}>
             {visible ? "✅" : "❌"}
@@ -142,6 +145,20 @@ function saveResult(gameName: string, newResult: GameResult) {
   );
   savedResults.push(newResult);
   localStorage.setItem(`${gameName}Results`, JSON.stringify(savedResults));
+
+  if (!toast.isActive("clipboard-toast")) {
+    toast.success(`Saved result for ${gameName}!`, {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      toastId: "clipboard-toast",
+    });
+  }
 }
 
 function calculateCountdown(): string {
