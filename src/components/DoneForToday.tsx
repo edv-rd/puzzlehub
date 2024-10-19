@@ -30,7 +30,7 @@ export const DoneForToday: React.FC = () => {
       );
       const todayResult = results.find((r) => r.playedDate === todayDate);
       if (todayResult) {
-        combinedResult += `${todayResult.result}\n\n`;
+        combinedResult += `${todayResult.result}\n\n---\n\n`;
       }
     });
 
