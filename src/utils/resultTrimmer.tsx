@@ -72,6 +72,7 @@ const resultTrimmer = (props: Props) => {
       break;
     }
     default:
+      return originalText;
       break;
   }
   console.log(trimmedText);
