@@ -35,9 +35,13 @@ export const DoneForToday: React.FC = () => {
     });
 
     if (combinedResult) {
+      const randomEmojis = ["👍", "🙊", "😀", "💪", "😈", "💗"];
+      const randomEmoji =
+        randomEmojis[Math.floor(Math.random() * randomEmojis.length)];
+
       combinedResult =
         combinedResult +
-        "---\n\nhttp://puzzlehub.edvardshemsida.se - Made by Ed 👍";
+        `---\n\nhttp://puzzlehub.edvardshemsida.se - Made by Ed ${randomEmoji}`;
       navigator.clipboard.writeText(combinedResult.trim());
       toast.success("Results updated!", {
         position: "top-center",
