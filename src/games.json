@@ -1,13 +1,13 @@
 [
   {
     "gameName": "Wordle",
-    "gameImage": "wordle.png",
+    "gameImage": "wordle.svg",
     "gameUrl": "https://www.nytimes.com/games/wordle",
     "regex": "^Wordle\\s\\d{1,4}\\s\\d{1,3}\\s"
   },
   {
     "gameName": "Connections",
-    "gameImage": "connections.png",
+    "gameImage": "connections.svg",
     "gameUrl": "https://www.nytimes.com/games/connections",
     "regex": "^Connections\\s*\\nPuzzle\\s+#\\d+"
   },
@@ -25,14 +25,26 @@
   },
   {
     "gameName": "Chronophoto",
-    "gameImage": "chronophoto.png",
+    "gameImage": "Chronophoto.svg",
     "gameUrl": "https://chronophoto.app",
-    "regex": "I got a score of (\\d+) on today's Chronophoto: (\\d{4}-\\d{2}-\\d{2})"
+    "regex": "I got a score of (\\d+) on today's Chronophoto"
   },
   {
     "gameName": "TimeGuessr",
-    "gameImage": "timeguessr.png",
+    "gameImage": "timeguessr.svg",
     "gameUrl": "https://timeguessr.com/",
     "regex": "TimeGuessr #(\\d+)"
+  },
+  {
+    "gameName": "Strands",
+    "gameImage": "strands.svg",
+    "gameUrl": "https://www.nytimes.com/games/strands",
+    "regex": "Strands #\\d+"
+  },
+  {
+    "gameName": "The Mini Crossword",
+    "gameImage": "mini.svg",
+    "gameUrl": "https://www.nytimes.com/crosswords/game/mini",
+    "regex": "https://www.nytimes.com/badges/games/mini.html?d"
   }
 ]

@@ -49,12 +49,28 @@ export const Game: React.FC<GameProps> = ({
     const checkClipboard = async () => {
       try {
         const text = await navigator.clipboard.readText();
-        if (isValidResult(text) && !isFinished) {
+
+        if (gameName === "The Mini Crossword" && isValidResult(text)) {
+          const timeMatch = text.match(/[?&]t=(\d+)/);
+          if (timeMatch) {
+            const time = timeMatch[1];
+            const newResult: GameResult = {
+              gameName: gameName,
+              result: `I finished today's Mini in ${time} seconds`,
+              playedDate: getTodayDate(),
+            };
+
+            saveResult(gameName, newResult);
+            setIsFinished(true);
+          }
+        } else if (isValidResult(text) && !isFinished) {
+          // Default case for other games
           const newResult: GameResult = {
             gameName: gameName,
             result: text,
             playedDate: getTodayDate(),
           };
+
           saveResult(gameName, newResult);
           setIsFinished(true);
         }
