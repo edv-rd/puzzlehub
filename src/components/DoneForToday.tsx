@@ -36,7 +36,8 @@ export const DoneForToday: React.FC = () => {
 
     if (combinedResult) {
       combinedResult =
-        combinedResult + "---\n\nhttp://puzzlehub.edvardshemsida.se 👍";
+        combinedResult +
+        "---\n\nhttp://puzzlehub.edvardshemsida.se - Made by Ed 👍";
       navigator.clipboard.writeText(combinedResult.trim());
       toast.success("Results updated!", {
         position: "top-center",

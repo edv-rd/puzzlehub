@@ -45,6 +45,6 @@
     "gameName": "The Mini Crossword",
     "gameImage": "mini.svg",
     "gameUrl": "https://www.nytimes.com/crosswords/game/mini",
-    "regex": "https://www.nytimes.com/badges/games/mini.html?d"
+    "regex": "^https:\\/\\/www\\.nytimes\\.com\\/badges\\/games\\/mini\\.html\\?d="
   }
 ]

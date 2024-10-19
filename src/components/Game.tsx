@@ -7,6 +7,7 @@ import {
   StyledCheckmark,
 } from "./styles/Game.styled";
 import { GameResult } from "./DoneForToday";
+import resultTrimmer from "../utils/resultTrimmer";
 
 interface GameProps {
   gameName: string;
@@ -56,7 +57,7 @@ export const Game: React.FC<GameProps> = ({
             const time = timeMatch[1];
             const newResult: GameResult = {
               gameName: gameName,
-              result: `I finished today's Mini in ${time} seconds`,
+              result: `I finished today's Mini in ${time} seconds!`,
               playedDate: getTodayDate(),
             };
 
@@ -64,10 +65,11 @@ export const Game: React.FC<GameProps> = ({
             setIsFinished(true);
           }
         } else if (isValidResult(text) && !isFinished) {
-          // Default case for other games
+          const trimmedResult = resultTrimmer({ gameName, text });
+
           const newResult: GameResult = {
             gameName: gameName,
-            result: text,
+            result: trimmedResult,
             playedDate: getTodayDate(),
           };
 
@@ -83,10 +85,10 @@ export const Game: React.FC<GameProps> = ({
         .replace(/\u00A0/g, " ")
         .replace(/\r\n/g, "\n")
         .trim();
-      console.log("Normalized Input:", normalizedInput);
+      // console.log("Normalized Input:", normalizedInput);
       const regexPattern = new RegExp(regex, "m");
-      console.log(regexPattern);
-      console.log("Match Result:", regexPattern.test(normalizedInput));
+      // console.log(regexPattern);
+      // console.log("Match Result:", regexPattern.test(normalizedInput));
       return regexPattern.test(normalizedInput);
     };
 
