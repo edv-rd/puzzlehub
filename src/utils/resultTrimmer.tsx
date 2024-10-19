@@ -15,8 +15,8 @@ const resultTrimmer = (props: Props) => {
         .filter((line) => line.length > 0);
 
       const cleanedLines = [
-        lines[0].replace(/(\d+)/, "#$1"), // Add '#' before the number
-        ...lines.slice(1).map((line) => line.trim()), // Trim other lines
+        lines[0].replace(/(\d+)/, "#$1"),
+        ...lines.slice(1).map((line) => line.trim()),
       ];
 
       trimmedText = cleanedLines.join("\n");
@@ -24,12 +24,15 @@ const resultTrimmer = (props: Props) => {
     }
 
     case "Connections": {
-      const lines = originalText.split("\n");
+      const lines = originalText.split(/\r?\n/);
+      console.dir(lines);
 
       const cleanedLines = [
         `${lines[0]} #${lines[1].split("#")[1].trim()}`,
         ...lines.slice(2).map((line) => line.trim()),
       ];
+
+      console.dir(cleanedLines);
 
       trimmedText = cleanedLines.join("\n").trim();
       break;
