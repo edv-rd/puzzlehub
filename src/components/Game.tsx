@@ -31,7 +31,6 @@ export const Game: React.FC<GameProps> = ({
   onToggleVisibility,
 }) => {
   const [isFinished, setIsFinished] = useState(false);
-  const [countdown, setCountdown] = useState(calculateCountdown());
 
   useEffect(() => {
     const savedResults = JSON.parse(
@@ -45,7 +44,6 @@ export const Game: React.FC<GameProps> = ({
     }
 
     const intervalId = setInterval(() => {
-      setCountdown(calculateCountdown());
       checkClipboard();
     }, 1000);
 
@@ -120,14 +118,12 @@ export const Game: React.FC<GameProps> = ({
           {!isFinished ? (
             <h2>Play {gameName}!</h2>
           ) : (
-            <h2>
-              ⏰ New {gameName} in {countdown}...
-            </h2>
+            <h2>{gameName} done 👍</h2>
           )}
         </StyledButton>
         {editMode && (
           <StyledCheckmark onClick={onToggleVisibility}>
-            {visible ? "✅" : "❌"}
+            visible? {visible ? "✅" : "❌"}
           </StyledCheckmark>
         )}
       </StyledButtonSection>
@@ -159,17 +155,4 @@ function saveResult(gameName: string, newResult: GameResult) {
       toastId: "clipboard-toast",
     });
   }
-}
-
-function calculateCountdown(): string {
-  const now = new Date();
-  const midnight = new Date(now);
-  midnight.setHours(24, 0, 0, 0);
-  const diff = midnight.getTime() - now.getTime();
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-  return `${hours.toString().padStart(2, "0")}:${minutes
-    .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
