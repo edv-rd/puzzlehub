@@ -7,13 +7,13 @@ interface StyledWrapperProps {
 }
 
 export const StyledWrapper = styled.div<StyledWrapperProps>`
-  display: ${(props) =>
-    props.editMode || props.visible
-      ? "flex"
-      : "none"}; // Show if editMode is true or visible is true
+  display: ${(props) => (props.editMode || props.visible ? "flex" : "none")};
   flex-direction: column;
   align-items: center;
-  width: 30em;
+
+  @media (max-width: 991px) {
+    width: 90%;
+  }
 
   img {
     object-fit: contain;
@@ -24,17 +24,14 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
     text-decoration: none;
   }
 
-  // Apply styles based on editMode and visible props
   ${(props) =>
     props.editMode && !props.visible
       ? css`
-          filter: brightness(
-            60%
-          ); // Apply brightness filter if not visible in edit mode
+          filter: brightness(60%);
         `
       : props.finished
       ? css`
-          filter: brightness(60%); // Apply brightness filter if finished
+          filter: brightness(60%);
         `
       : css`
           &:hover {

@@ -6,7 +6,7 @@ type Props = {
 const resultTrimmer = (props: Props) => {
   let trimmedText = "";
   const originalText = props.text;
-  console.log(originalText);
+
   switch (props.gameName) {
     case "Wordle": {
       const lines = originalText
@@ -25,14 +25,11 @@ const resultTrimmer = (props: Props) => {
 
     case "Connections": {
       const lines = originalText.split(/\r?\n/);
-      console.dir(lines);
 
       const cleanedLines = [
         `${lines[0]} #${lines[1].split("#")[1].trim()}`,
         ...lines.slice(2).map((line) => line.trim()),
       ];
-
-      console.dir(cleanedLines);
 
       trimmedText = cleanedLines.join("\n").trim();
       break;
@@ -56,13 +53,11 @@ const resultTrimmer = (props: Props) => {
     }
     case "Chronophoto": {
       const scoreMatch = originalText.match(/I got a score of (\d+)/);
-      const score = scoreMatch ? scoreMatch[1] : "0"; // Default to 0 if not found
-      const lines = originalText.split("\n").slice(1, -1); // Remove the first and last line
+      const score = scoreMatch ? scoreMatch[1] : "0";
+      const lines = originalText.split("\n").slice(1, -1);
 
-      // Create the first line with the score
       const firstLine = `Chronophoto ${score}/5000`;
 
-      // Join the cleaned lines back together
       trimmedText = [firstLine, ...lines].join("\n").trim();
       break;
     }
@@ -78,7 +73,7 @@ const resultTrimmer = (props: Props) => {
       return originalText;
       break;
   }
-  console.log(trimmedText);
+
   return trimmedText;
 };
 

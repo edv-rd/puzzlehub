@@ -26,13 +26,13 @@
   {
     "gameName": "Chronophoto",
     "gameImage": "Chronophoto.svg",
-    "gameUrl": "https://chronophoto.app",
+    "gameUrl": "https://www.chronophoto.app/daily.html",
     "regex": "^I got a score of (\\d+) on today's Chronophoto"
   },
   {
     "gameName": "TimeGuessr",
     "gameImage": "timeguessr.svg",
-    "gameUrl": "https://timeguessr.com/",
+    "gameUrl": "https://timeguessr.com/roundonedaily",
     "regex": "^TimeGuessr #(\\d+)"
   },
   {

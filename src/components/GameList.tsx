@@ -73,7 +73,6 @@ export const GameList: React.FC = () => {
         pauseOnHover
         theme="colored"
       />
-
       <TopBar editMode={editMode} setEditMode={setEditMode} />
       <StyledWrapper>
         <StyledGameGrid>

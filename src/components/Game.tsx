@@ -66,7 +66,14 @@ export const Game: React.FC<GameProps> = ({
             navigator.clipboard.writeText("");
           }
         } else if (isValidResult(text) && !isFinished) {
-          const trimmedResult = resultTrimmer({ gameName, text });
+          const normalizedText = text
+            .replace(/\u00A0/g, " ")
+            .replace(/\r\n/g, "\n")
+            .trim();
+          const trimmedResult = resultTrimmer({
+            gameName,
+            text: normalizedText,
+          });
 
           const newResult: GameResult = {
             gameName: gameName,
@@ -87,10 +94,9 @@ export const Game: React.FC<GameProps> = ({
         .replace(/\u00A0/g, " ")
         .replace(/\r\n/g, "\n")
         .trim();
-      // console.log("Normalized Input:", normalizedInput);
+
       const regexPattern = new RegExp(regex);
-      // console.log(regexPattern);
-      // console.log("Match Result:", regexPattern.test(normalizedInput));
+
       return regexPattern.test(normalizedInput);
     };
 
