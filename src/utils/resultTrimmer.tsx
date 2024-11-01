@@ -54,11 +54,15 @@ const resultTrimmer = (props: Props) => {
     case "Chronophoto": {
       const scoreMatch = originalText.match(/I got a score of (\d+)/);
       const score = scoreMatch ? scoreMatch[1] : "0";
-      const lines = originalText.split("\n").slice(1, -1);
+      const lines = originalText.split("\n").slice(1);
 
       const firstLine = `Chronophoto ${score}/5000`;
 
-      trimmedText = [firstLine, ...lines].join("\n").trim();
+      trimmedText = [firstLine, ...lines]
+        .join("\n")
+        .trim()
+        .replace(/\s*https:\/\/www\.chronophoto\.app\/daily\.html\s*$/, "");
+
       break;
     }
     case "TimeGuessr": {
