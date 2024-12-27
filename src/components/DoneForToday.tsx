@@ -1,17 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import { StyledButton } from "./styles/Button.styled";
 import gameData from "../games.json";
 import { toast } from "react-toastify";
-
-const StyledButton = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: var(--secondary-color);
-  color: var(--tertiary-color);
-  border: none;
-  cursor: pointer;
-  margin-top: 20px;
-`;
 
 export interface GameResult {
   gameName: string;
@@ -19,7 +9,11 @@ export interface GameResult {
   playedDate: string;
 }
 
-export const DoneForToday: React.FC = () => {
+interface DoneForTodayProps {
+  setViewMode: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
   const handleDoneClick = () => {
     const todayDate = new Date().toISOString().split("T")[0];
     let combinedResult = `PuzzleHub for ${todayDate}\n\n---\n\n`;
@@ -70,7 +64,7 @@ export const DoneForToday: React.FC = () => {
   return (
     <>
       <StyledButton onClick={handleDoneClick}>Done for today</StyledButton>
-      <StyledButton onClick={handleDoneClick}>
+      <StyledButton onClick={() => setViewMode("toplists")}>
         Just want to see the results...
       </StyledButton>
     </>

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import gameData from "../games.json";
 
 import "react-toastify/dist/ReactToastify.css";
+import { DoneForToday } from "./DoneForToday";
 
 const StyledGameGrid = styled.div`
   display: grid;
@@ -29,9 +30,13 @@ export interface GameInfo {
 
 interface GameListProps {
   editMode: boolean;
+  setViewMode: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const GameList: React.FC<GameListProps> = ({ editMode }) => {
+export const GameList: React.FC<GameListProps> = ({
+  editMode,
+  setViewMode,
+}) => {
   const [games, setGames] = useState<GameInfo[]>([]);
 
   useEffect(() => {
@@ -70,6 +75,8 @@ export const GameList: React.FC<GameListProps> = ({ editMode }) => {
           />
         ))}
       </StyledGameGrid>
+
+      <DoneForToday setViewMode={setViewMode} />
     </>
   );
 };

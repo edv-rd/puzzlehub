@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import { DoneForToday } from "./DoneForToday";
 import styled from "styled-components";
 
 import TopBar from "./TopBar";
@@ -8,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BottomBar from "./BottomBar";
 import { GameList } from "./GameList";
+import TopLists from "./Toplists";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -25,6 +25,7 @@ export interface GameInfo {
 
 export const GameView: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
+  const [viewMode, setViewMode] = useState("gamelist");
   return (
     <>
       <ToastContainer
@@ -41,8 +42,13 @@ export const GameView: React.FC = () => {
       />
       <TopBar editMode={editMode} setEditMode={setEditMode} />
       <StyledWrapper>
-        <GameList editMode={editMode} />
-        <DoneForToday />
+        {viewMode === "gamelist" ? (
+          <GameList editMode={editMode} setViewMode={setViewMode} />
+        ) : viewMode === "toplists" ? (
+          <TopLists setViewMode={setViewMode} />
+        ) : (
+          <GameList editMode={editMode} setViewMode={setViewMode} />
+        )}
       </StyledWrapper>
       <BottomBar />
     </>
