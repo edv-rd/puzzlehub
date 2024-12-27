@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const StyledBottomBar = styled.div`
@@ -18,7 +18,7 @@ const StyledBottomBar = styled.div`
   }
 `;
 
-const BottomBar: React.FC<BottomBarProps> = () => {
+const BottomBar = () => {
   const [countdown, setCountdown] = useState(calculateCountdown());
 
   useEffect(() => {

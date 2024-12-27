@@ -1,5 +1,3 @@
-interface TopListsProps {}
-
 const TopLists = () => {
   return <></>;
 };
