@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import UserName from "./UserName";
 
 const StyledTopBar = styled.div`
   height: 30px;
@@ -39,6 +40,7 @@ const TopBar: React.FC<TopBarProps> = ({ editMode, setEditMode }) => {
       <StyledEditModeSwitch onClick={() => setEditMode(!editMode)}>
         edit mode <b>{editMode ? "on" : "off"}</b>
       </StyledEditModeSwitch>
+      <UserName />
       <div>⏰ New games in {countdown}...</div>
       <div>
         <a href="http://edvardshemsida.se" target="_blank">
