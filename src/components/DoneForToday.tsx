@@ -67,5 +67,12 @@ export const DoneForToday: React.FC = () => {
     }
   };
 
-  return <StyledButton onClick={handleDoneClick}>Done for today</StyledButton>;
+  return (
+    <>
+      <StyledButton onClick={handleDoneClick}>Done for today</StyledButton>
+      <StyledButton onClick={handleDoneClick}>
+        Just want to see the results...
+      </StyledButton>
+    </>
+  );
 };

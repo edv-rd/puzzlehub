@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Game } from "./Game";
-import { DoneForToday } from "./DoneForToday";
+
 import styled from "styled-components";
 import gameData from "../games.json";
-import TopBar from "./TopBar";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import BottomBar from "./BottomBar";
 
-const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledGameGrid = styled.div`
   display: grid;
@@ -35,9 +27,11 @@ export interface GameInfo {
   visible: boolean;
 }
 
-export const GameList: React.FC = () => {
-  const [editMode, setEditMode] = useState(false);
+interface GameListProps {
+  editMode: boolean;
+}
 
+export const GameList: React.FC<GameListProps> = ({ editMode }) => {
   const [games, setGames] = useState<GameInfo[]>([]);
 
   useEffect(() => {
@@ -62,37 +56,20 @@ export const GameList: React.FC = () => {
   };
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={1000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      <TopBar editMode={editMode} setEditMode={setEditMode} />
-      <StyledWrapper>
-        <StyledGameGrid>
-          {games.map((game: GameInfo, index: number) => (
-            <Game
-              key={index}
-              gameName={game.gameName}
-              gameImage={game.gameImage}
-              gameUrl={game.gameUrl}
-              regex={game.regex}
-              visible={game.visible}
-              editMode={editMode}
-              onToggleVisibility={() => toggleVisibility(index)}
-            />
-          ))}
-        </StyledGameGrid>
-        <DoneForToday />
-      </StyledWrapper>
-      <BottomBar />
+      <StyledGameGrid>
+        {games.map((game: GameInfo, index: number) => (
+          <Game
+            key={index}
+            gameName={game.gameName}
+            gameImage={game.gameImage}
+            gameUrl={game.gameUrl}
+            regex={game.regex}
+            visible={game.visible}
+            editMode={editMode}
+            onToggleVisibility={() => toggleVisibility(index)}
+          />
+        ))}
+      </StyledGameGrid>
     </>
   );
 };
