@@ -6,6 +6,7 @@ import gameData from "../games.json";
 import TopBar from "./TopBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BottomBar from "./BottomBar";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -91,6 +92,7 @@ export const GameList: React.FC = () => {
         </StyledGameGrid>
         <DoneForToday />
       </StyledWrapper>
+      <BottomBar />
     </>
   );
 };
