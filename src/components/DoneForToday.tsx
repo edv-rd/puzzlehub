@@ -2,6 +2,7 @@ import React from "react";
 import { StyledButton } from "./styles/Button.styled";
 import gameData from "../games.json";
 import { toast } from "react-toastify";
+import { addResults } from "../utils/fetch";
 
 export interface GameResult {
   gameName: string;
@@ -14,9 +15,21 @@ interface DoneForTodayProps {
 }
 
 export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
-  const handleDoneClick = () => {
+  const handleDoneClick = async () => {
     const todayDate = new Date().toISOString().split("T")[0];
     let combinedResult = `PuzzleHub for ${todayDate}\n\n---\n\n`;
+
+    const localUserName = localStorage.getItem("localUserName");
+
+    const resultsToSend: {
+      username: string | null;
+      date: string;
+      results: GameResult[];
+    } = {
+      username: localUserName,
+      date: todayDate,
+      results: [],
+    };
 
     gameData.forEach((game) => {
       const results: GameResult[] = JSON.parse(
@@ -26,6 +39,15 @@ export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
       if (todayResult) {
         combinedResult += `${todayResult.result}\n\n---\n\n`;
       }
+
+      const resultObject = {
+        gameName: game.gameName,
+        result: todayResult ? todayResult.result : "No result",
+        playedDate: todayDate,
+      };
+
+      resultsToSend.results.push(resultObject);
+      console.dir(resultsToSend);
     });
 
     if (combinedResult) {
@@ -37,6 +59,11 @@ export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
         combinedResult +
         `http://puzzlehub.edvardshemsida.se - Made by Ed ${randomEmoji}`;
       navigator.clipboard.writeText(combinedResult.trim());
+
+      const addResultsResponse = await addResults(resultsToSend);
+
+      console.log(addResultsResponse);
+
       toast.success("Results updated!", {
         position: "top-center",
         autoClose: 1000,

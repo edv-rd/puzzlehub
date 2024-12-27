@@ -6,6 +6,7 @@ import gameData from "../games.json";
 
 import "react-toastify/dist/ReactToastify.css";
 import { DoneForToday } from "./DoneForToday";
+import { GameInfo } from "./GameView";
 
 const StyledGameGrid = styled.div`
   display: grid;
@@ -19,14 +20,6 @@ const StyledGameGrid = styled.div`
     grid-template-rows: repeat(1, 1fr);
   }
 `;
-
-export interface GameInfo {
-  gameName: string;
-  gameImage: string;
-  gameUrl: string;
-  regex: string;
-  visible: boolean;
-}
 
 interface GameListProps {
   editMode: boolean;
