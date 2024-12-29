@@ -19,10 +19,13 @@ export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
     const todayDate = new Date().toISOString().split("T")[0];
     let combinedResult = `PuzzleHub for ${todayDate}\n\n---\n\n`;
 
-    const localUserName = localStorage.getItem("localUserName");
+    let localUserName = localStorage.getItem("localUserName");
+    if (!localUserName) {
+      localUserName = "Anonymous";
+    }
 
     const resultsToSend: {
-      username: string | null;
+      username: string;
       date: string;
       results: GameResult[];
     } = {
