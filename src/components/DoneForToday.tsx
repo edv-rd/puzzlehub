@@ -17,12 +17,13 @@ interface DoneForTodayProps {
 export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
   const handleDoneClick = async () => {
     const todayDate = new Date().toISOString().split("T")[0];
-    let combinedResult = `PuzzleHub for ${todayDate}\n\n---\n\n`;
 
     let localUserName = localStorage.getItem("localUserName");
     if (!localUserName) {
       localUserName = "Anonymous";
     }
+
+    let combinedResult = `PuzzleHub for ${localUserName} ${todayDate}\n\n---\n\n`;
 
     const resultsToSend: {
       username: string;
