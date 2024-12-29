@@ -21,8 +21,9 @@ export interface GameResult {
 
 export const DoneForToday: React.FC = () => {
   const handleDoneClick = () => {
+    const localUserName = localStorage.getItem("localUserName");
     const todayDate = new Date().toISOString().split("T")[0];
-    let combinedResult = `PuzzleHub for ${todayDate}\n\n---\n\n`;
+    let combinedResult = `PuzzleHub for ${localUserName} ${todayDate}\n\n---\n\n`;
 
     gameData.forEach((game) => {
       const results: GameResult[] = JSON.parse(
