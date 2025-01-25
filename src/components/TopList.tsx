@@ -75,7 +75,7 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
                 );
               })
           ) : (
-            <div>Loading results for {gameName}...</div>
+            <div>No results for {gameName} today yet...</div>
           )}
         </StyledTopListText>
       </StyledTopList>
