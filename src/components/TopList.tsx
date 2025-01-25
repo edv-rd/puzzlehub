@@ -27,7 +27,7 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
     null
   );
 
-  const processResult = (todaysResult: any) => {
+  const processResult = (todaysResult: Result) => {
     const props = {
       gameName: todaysResult.game,
       result: todaysResult.result,
@@ -39,10 +39,8 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
   useEffect(() => {
     const fetchResults = async () => {
       const results = await fetchDate(getTodayDate().toString(), gameName);
+
       setTodaysResults(results);
-      console.log(`results for ${gameName}`);
-      console.dir(results);
-      console.dir(todaysResults);
     };
 
     fetchResults();
@@ -54,11 +52,20 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
         {gameName} results for {getTodayDate()}
       </h1>
       {todaysResults?.response.allEntries.length ? (
-        todaysResults.response.allEntries.map((todaysResult) => (
-          <div key={todaysResult._id}>
-            {todaysResult.username} {processResult(todaysResult)}
-          </div>
-        ))
+        todaysResults.response.allEntries
+          .sort((a, b) => {
+            const resultA = processResult(a);
+            const resultB = processResult(b);
+            return resultB.resultInt - resultA.resultInt; // descending order
+          })
+          .map((todaysResult) => {
+            const result = processResult(todaysResult);
+            return (
+              <div key={todaysResult._id}>
+                {todaysResult.username} {result.trimmedResult}
+              </div>
+            );
+          })
       ) : (
         <div>Loading results for {gameName}...</div>
       )}

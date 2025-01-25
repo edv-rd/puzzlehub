@@ -6,7 +6,7 @@ export async function fetchDate(
   gameName: string
 ): Promise<{
   response: {
-    result: {
+    allEntries: {
       _id: string;
       result: string;
       username: string;
@@ -15,7 +15,6 @@ export async function fetchDate(
     }[];
   };
 }> {
-  console.log(`using ${date} for date`);
   return fetch(
     `${API_URL}/today?` +
       new URLSearchParams({
