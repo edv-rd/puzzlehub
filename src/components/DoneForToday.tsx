@@ -23,7 +23,7 @@ export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
       localUserName = "Anonymous";
     }
 
-    let combinedResult = `PuzzleHub for ${localUserName} ${todayDate}\n\n---\n\n`;
+    let combinedResult = `PuzzleHub for ${localUserName} at ${todayDate}\n\n---\n\n`;
 
     const resultsToSend: {
       username: string;

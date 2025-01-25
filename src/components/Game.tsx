@@ -10,6 +10,7 @@ import { GameResult } from "./DoneForToday";
 import resultTrimmer from "../utils/resultTrimmer";
 import { toast } from "react-toastify";
 import React from "react";
+import { getTodayDate } from "../utils/utils";
 
 interface GameProps {
   gameName: string;
@@ -136,10 +137,6 @@ export const Game: React.FC<GameProps> = ({
     </StyledWrapper>
   );
 };
-
-function getTodayDate(): string {
-  return new Date().toISOString().split("T")[0];
-}
 
 function saveResult(gameName: string, newResult: GameResult) {
   const savedResults = JSON.parse(

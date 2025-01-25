@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchDate } from "../utils/fetch";
+import { getTodayDate } from "../utils/utils";
+import resultCalc from "../utils/resultCalc";
 
 interface TopListProps {
   gameName: string;
@@ -17,7 +19,7 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
 
   interface ResultsResponse {
     response: {
-      result: Result[];
+      allEntries: Result[];
     };
   }
 
@@ -25,10 +27,22 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
     null
   );
 
+  const processResult = (todaysResult: any) => {
+    const props = {
+      gameName: todaysResult.game,
+      result: todaysResult.result,
+      username: todaysResult.username,
+    };
+    return resultCalc(props);
+  };
+
   useEffect(() => {
     const fetchResults = async () => {
-      const results = await fetchDate(gameName, date);
+      const results = await fetchDate(getTodayDate().toString(), gameName);
       setTodaysResults(results);
+      console.log(`results for ${gameName}`);
+      console.dir(results);
+      console.dir(todaysResults);
     };
 
     fetchResults();
@@ -36,12 +50,17 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
 
   return (
     <>
-      {todaysResults ? (
-        todaysResults.response.result.map((todaysResult) => (
-          <div key={todaysResult._id}>{todaysResult.username}</div>
+      <h1>
+        {gameName} results for {getTodayDate()}
+      </h1>
+      {todaysResults?.response.allEntries.length ? (
+        todaysResults.response.allEntries.map((todaysResult) => (
+          <div key={todaysResult._id}>
+            {todaysResult.username} {processResult(todaysResult)}
+          </div>
         ))
       ) : (
-        <div>Loading...</div>
+        <div>Loading results for {gameName}...</div>
       )}
     </>
   );
