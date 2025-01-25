@@ -90,6 +90,8 @@ export const DoneForToday: React.FC<DoneForTodayProps> = ({ setViewMode }) => {
         theme: "colored",
       });
     }
+
+    setViewMode("toplists");
   };
 
   return (
