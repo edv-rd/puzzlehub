@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { fetchDate } from "../utils/fetch";
 import { getTodayDate } from "../utils/utils";
 import resultCalc from "../utils/resultCalc";
+import {
+  StyledTopList,
+  StyledTopListItem,
+  StyledTopListText,
+  StyledWrapper,
+} from "./styles/TopList.styled";
 
 interface TopListProps {
   gameName: string;
@@ -47,29 +53,33 @@ const TopList: React.FC<TopListProps> = ({ gameName, date }) => {
   }, [date]);
 
   return (
-    <>
-      <h1>
+    <StyledWrapper>
+      <h2>
         {gameName} results for {getTodayDate()}
-      </h1>
-      {todaysResults?.response.allEntries.length ? (
-        todaysResults.response.allEntries
-          .sort((a, b) => {
-            const resultA = processResult(a);
-            const resultB = processResult(b);
-            return resultB.resultInt - resultA.resultInt; // descending order
-          })
-          .map((todaysResult) => {
-            const result = processResult(todaysResult);
-            return (
-              <div key={todaysResult._id}>
-                {todaysResult.username} {result.trimmedResult}
-              </div>
-            );
-          })
-      ) : (
-        <div>Loading results for {gameName}...</div>
-      )}
-    </>
+      </h2>
+      <StyledTopList>
+        <StyledTopListText>
+          {todaysResults?.response.allEntries.length ? (
+            todaysResults.response.allEntries
+              .sort((a, b) => {
+                const resultA = processResult(a);
+                const resultB = processResult(b);
+                return resultB.resultInt - resultA.resultInt; // descending order
+              })
+              .map((todaysResult, index) => {
+                const result = processResult(todaysResult);
+                return (
+                  <StyledTopListItem key={todaysResult._id}>
+                    {index + 1}. {todaysResult.username} {result.trimmedResult}
+                  </StyledTopListItem>
+                );
+              })
+          ) : (
+            <div>Loading results for {gameName}...</div>
+          )}
+        </StyledTopListText>
+      </StyledTopList>
+    </StyledWrapper>
   );
 };
 
