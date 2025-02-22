@@ -116,6 +116,14 @@ export const StyledButtonInterior = styled.div`
   justify-content: center;
 `;
 
+export const StyledButtonInteriorText = styled.div`
+  flex: 3;
+`;
+
+export const StyledButtonInteriorPasteButton = styled.div`
+  flex: 1;
+`;
+
 export const StyledCheckmark = styled.div`
   cursor: pointer;
   font-size: 24px;

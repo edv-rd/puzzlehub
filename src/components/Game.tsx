@@ -7,6 +7,8 @@ import {
   StyledCheckmark,
   StyledPasteButton,
   StyledButtonInterior,
+  StyledButtonInteriorText,
+  StyledButtonInteriorPasteButton,
 } from "./styles/Game.styled";
 import { GameResult } from "./DoneForToday";
 import resultTrimmer from "../utils/resultTrimmer";
@@ -122,12 +124,14 @@ export const Game: React.FC<GameProps> = ({
         <StyledButton>
           {!isFinished ? (
             <StyledButtonInterior>
-              <div onClick={() => checkClipboard()}>
+              <StyledButtonInteriorText onClick={() => checkClipboard()}>
                 <h2>Play {gameName}!</h2>
-              </div>
-              <StyledPasteButton onClick={() => checkClipboard()}>
-                📋
-              </StyledPasteButton>
+              </StyledButtonInteriorText>
+              <StyledButtonInteriorPasteButton>
+                <StyledPasteButton onClick={() => checkClipboard()}>
+                  📋
+                </StyledPasteButton>
+              </StyledButtonInteriorPasteButton>
             </StyledButtonInterior>
           ) : (
             <h2>{gameName} done 👍</h2>
