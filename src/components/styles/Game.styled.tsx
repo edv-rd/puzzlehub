@@ -94,6 +94,28 @@ export const StyledButton = styled.div`
   width: 100%;
 `;
 
+export const StyledPasteButton = styled.button`
+  background-color: var(--secondary-color);
+  color: var(--secondary-color);
+  border-color: var(--tertiary-color);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+export const StyledButtonInterior = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 0.5em;
+  flex-direction: row;
+  justify-content: center;
+`;
+
 export const StyledCheckmark = styled.div`
   cursor: pointer;
   font-size: 24px;

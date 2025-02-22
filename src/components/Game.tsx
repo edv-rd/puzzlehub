@@ -5,6 +5,8 @@ import {
   StyledButtonSection,
   StyledButton,
   StyledCheckmark,
+  StyledPasteButton,
+  StyledButtonInterior,
 } from "./styles/Game.styled";
 import { GameResult } from "./DoneForToday";
 import resultTrimmer from "../utils/resultTrimmer";
@@ -33,6 +35,60 @@ export const Game: React.FC<GameProps> = ({
 }) => {
   const [isFinished, setIsFinished] = useState(false);
 
+  const checkClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+
+      if (gameName === "The Mini Crossword" && isValidResult(text)) {
+        const timeMatch = text.match(/[?&]t=(\d+)/);
+        if (timeMatch) {
+          const time = timeMatch[1];
+          const newResult: GameResult = {
+            gameName: gameName,
+            result: `I finished today's Mini in ${time} seconds!`,
+            playedDate: getTodayDate(),
+          };
+
+          saveResult(gameName, newResult);
+          setIsFinished(true);
+          navigator.clipboard.writeText("");
+        }
+      } else if (isValidResult(text) && !isFinished) {
+        const normalizedText = text
+          .replace(/\u00A0/g, " ")
+          .replace(/\r\n/g, "\n")
+          .trim();
+        const trimmedResult = resultTrimmer({
+          gameName,
+          text: normalizedText,
+        });
+
+        const newResult: GameResult = {
+          gameName: gameName,
+          result: trimmedResult,
+          playedDate: getTodayDate(),
+        };
+
+        saveResult(gameName, newResult);
+        setIsFinished(true);
+        navigator.clipboard.writeText("");
+      }
+    } catch (err) {
+      console.error("Failed to read clipboard contents: ", err);
+    }
+  };
+
+  const isValidResult = (input: string): boolean => {
+    const normalizedInput = input
+      .replace(/\u00A0/g, " ")
+      .replace(/\r\n/g, "\n")
+      .trim();
+
+    const regexPattern = new RegExp(regex);
+
+    return regexPattern.test(normalizedInput);
+  };
+
   useEffect(() => {
     const savedResults = JSON.parse(
       localStorage.getItem(`${gameName}Results`) || "[]"
@@ -48,59 +104,6 @@ export const Game: React.FC<GameProps> = ({
       checkClipboard();
     }, 1000);
 
-    const checkClipboard = async () => {
-      try {
-        const text = await navigator.clipboard.readText();
-
-        if (gameName === "The Mini Crossword" && isValidResult(text)) {
-          const timeMatch = text.match(/[?&]t=(\d+)/);
-          if (timeMatch) {
-            const time = timeMatch[1];
-            const newResult: GameResult = {
-              gameName: gameName,
-              result: `I finished today's Mini in ${time} seconds!`,
-              playedDate: getTodayDate(),
-            };
-
-            saveResult(gameName, newResult);
-            setIsFinished(true);
-            navigator.clipboard.writeText("");
-          }
-        } else if (isValidResult(text) && !isFinished) {
-          const normalizedText = text
-            .replace(/\u00A0/g, " ")
-            .replace(/\r\n/g, "\n")
-            .trim();
-          const trimmedResult = resultTrimmer({
-            gameName,
-            text: normalizedText,
-          });
-
-          const newResult: GameResult = {
-            gameName: gameName,
-            result: trimmedResult,
-            playedDate: getTodayDate(),
-          };
-
-          saveResult(gameName, newResult);
-          setIsFinished(true);
-          navigator.clipboard.writeText("");
-        }
-      } catch (err) {
-        console.error("Failed to read clipboard contents: ", err);
-      }
-    };
-    const isValidResult = (input: string): boolean => {
-      const normalizedInput = input
-        .replace(/\u00A0/g, " ")
-        .replace(/\r\n/g, "\n")
-        .trim();
-
-      const regexPattern = new RegExp(regex);
-
-      return regexPattern.test(normalizedInput);
-    };
-
     return () => clearInterval(intervalId);
   }, [gameName]);
 
@@ -111,19 +114,21 @@ export const Game: React.FC<GameProps> = ({
   };
 
   return (
-    <StyledWrapper
-      editMode={editMode}
-      finished={isFinished}
-      visible={visible}
-      onClick={handleGameClick}
-    >
-      <StyledGameInfoSection>
+    <StyledWrapper editMode={editMode} finished={isFinished} visible={visible}>
+      <StyledGameInfoSection onClick={handleGameClick}>
         <img src={`/${gameImage}`} alt={gameName} />
       </StyledGameInfoSection>
       <StyledButtonSection>
         <StyledButton>
           {!isFinished ? (
-            <h2>Play {gameName}!</h2>
+            <StyledButtonInterior>
+              <div onClick={() => checkClipboard()}>
+                <h2>Play {gameName}!</h2>
+              </div>
+              <StyledPasteButton onClick={() => checkClipboard()}>
+                📋
+              </StyledPasteButton>
+            </StyledButtonInterior>
           ) : (
             <h2>{gameName} done 👍</h2>
           )}
