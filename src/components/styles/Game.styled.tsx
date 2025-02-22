@@ -102,6 +102,8 @@ export const StyledPasteButton = styled.button`
   padding: 5px;
   margin: 5px;
   font-size: 16px;
+  height: 40px;
+  width: 40px;
   cursor: pointer;
   &:hover {
     opacity: 0.7;
