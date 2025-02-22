@@ -67,6 +67,9 @@ export const StyledButtonSection = styled.div`
   justify-content: center;
   padding: 5px;
   font-size: 18px;
+  @media (max-width: 991px) {
+    font-size: 14px;
+  }
 
   h2 {
     color: var(--tertiary-color);
